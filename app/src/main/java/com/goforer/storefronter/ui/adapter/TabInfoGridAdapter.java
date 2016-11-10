@@ -117,7 +117,7 @@ public class TabInfoGridAdapter extends BaseListAdapter<CategoryItem> {
                 public void onClick(View view) {
                     if (mIsResumed) {
                         //TODO:: Implement each operation when the item is clicked
-                        // That will be great if StoreFronter is be applied into Fyber Challenge as category activity
+                        // That will be great if StoreFronter is applied into Fyber Challenge as category activity
                     }
                 }
             });
