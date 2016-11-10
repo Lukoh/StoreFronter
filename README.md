@@ -2,6 +2,8 @@
 
 This shows reference how to make the front layer which is made up of tab-layout in the food delivery service, shopping or O2O service App on Android.
 
+It will be great if StoreFronter is applied into Fyber Challenge as category activity. That is great combination if StoreFronter would be combined well with [Fyber Challenge]().
+
 ## Libraries
 
 This app leverages third-party libraries:
