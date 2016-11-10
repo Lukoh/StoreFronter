@@ -1,6 +1,6 @@
 # StoreFronter
 
-This shows reference how to make the front layer which is made up of tab-layout in O2O or shopping service App.
+This shows reference how to make the front layer which is made up of tab-layout in the food delivery service, shopping or O2O service App on Android.
 
 ## Libraries
 
