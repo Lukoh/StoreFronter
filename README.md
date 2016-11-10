@@ -15,7 +15,6 @@ This app leverages third-party libraries:
  * [ButterKnife](http://jakewharton.github.io/butterknife/) - For field and method binding for Android views
  * [Glide](https://github.com/bumptech/glide) - For an image loading and caching library for Android focused on smooth scrolling
  * [SwipyRefreshLayout](https://github.com/OrangeGangsters/SwipyRefreshLayout) - For swiping in both direction
- * [FloatingActionButton](https://github.com/Clans/FloatingActionButton) - For using floating action button
  * [MaterialDrawer](https://github.com/mikepenz/MaterialDrawer) - For using drawer menu
   - I added/implmented more goood containers to be input into MaterialDrawer. Please refer to [SlidingDrawer]( https://github.com/Lukoh/Fyber_challenge_android/tree/master/app/src/main/java/com/goforer/fyber_challenge_android/ui/view/drawer) 
 
