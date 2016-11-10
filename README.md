@@ -1,5 +1,7 @@
 # StoreFronter
 
+This shows reference how to make the front layer which is made up of tab-layout in O2O or shopping service App.
+
 ## Libraries
 
 This app leverages third-party libraries:
