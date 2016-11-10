@@ -2,7 +2,8 @@
 
 This shows reference how to make the front layer which is made up of tab-layout in the food delivery service, shopping or O2O service App on Android.
 
-It will be great if StoreFronter is applied into Fyber Challenge as category activity. That is great combination if StoreFronter would be combined well with [Fyber Challenge]().
+It will be great if StoreFronter is applied into Fyber Challenge as category activity. That is great combination if StoreFronter would be combined well with [Fyber Challenge](https://github.com/Lukoh/Fyber_challenge_android).
+You can refer to StoreFronter source code if you'd like to make some category menu or service and use Fyber Challenge source code if you want to make the following functions like showing the list of available categories.(After being clicked an item in the category such as Grocery, Cosmetic, Clothes and so on. 
 
 ## Libraries
 
