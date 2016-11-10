@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">StoreFronter</string>
+    <string name="not_connected_internet">Internet connection not available.</string>
+    <string name="toast_process_error">This app is going to exit due to an error of data processing.</string>
+    <string name="loading">Loading on&#8230;</string>
+    <string name="toast_no_data">No data available.</string>
+    <string name="tab_fragment_first">First.</string>
+    <string name="toast_server_error_phrase">Can not connect to the server, try again later.</string>
+    <string name="toast_disconnect_phrase">Can not access the internet.</string>
+    <string name="toast_response_signature_mismatch_phrase">The signature of response is not valid.</string>
+    <string name="main_menu_event">Event</string>
+    <string name="main_menu_cart">Cart</string>
+    <string name="event_item_duration_tile"> Validity date : </string>
+    <string name="drawer_item_type">Item Type</string>
+    <string name="drawer_item_price">Price</string>
+    <string name="drawer_item_event">Event</string>
+    <string name="drawer_item_gallery">Gallery</string>
+    <string name="drawer_item_link">Link</string>
+    <string name="drawer_item_help">Help</string>
+    <string name="drawer_item_id">Item ID</string>
+    <string name="drawer_item_comments">Comments</string>
+    <string name="drawer_item_point">Points</string>
+    <string name="drawer_item_language">Language</string>
+    <string name="drawer_item_country">Country</string>
+</resources>
