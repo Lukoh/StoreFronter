@@ -11,6 +11,8 @@
     <color name="swipeBar">#E43231</color>
     <color name="list_divider">#EE0011</color>
     <color name="black">#000000</color>
+    <color name="black_transparent_30">#10000000</color>
+    <color name="black_transparent_20">#30000000</color>
     <color name="gray">#868686</color>
     <color name="custom_dialog_text">#666666</color>
     <color name="duration">#F2F2F2</color>
