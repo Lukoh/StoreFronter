@@ -100,7 +100,7 @@ public class CartListAdapter extends BaseListAdapter<Item> implements ItemTouchH
 
     @Override
     protected RecyclerView.ViewHolder createViewHolder(View view, int type) {
-        return new CartListAdapter.CartListViewHolder(view, mItems, ((BaseActivity)mContext).resumed());
+        return new CartListAdapter.CartListViewHolder(view, getItems(), ((BaseActivity)mContext).resumed());
     }
 
     @Override
@@ -116,14 +116,14 @@ public class CartListAdapter extends BaseListAdapter<Item> implements ItemTouchH
 
     @Override
     public void onItemDismiss(int position) {
-        mItems.remove(position);
+        getItems().remove(position);
         notifyItemRemoved(position);
         notifyItemChanged(position);
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(mItems, fromPosition, toPosition);
+        Collections.swap(getItems(), fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
@@ -142,7 +142,7 @@ public class CartListAdapter extends BaseListAdapter<Item> implements ItemTouchH
         EventBus.getDefault().post(action);
     }
 
-    public static class CartListViewHolder extends BaseViewHolder<Item> {
+    final static class CartListViewHolder extends BaseViewHolder<Item> {
         private List<Item> mItems;
 
         private boolean mIsResumed;
@@ -156,7 +156,7 @@ public class CartListAdapter extends BaseListAdapter<Item> implements ItemTouchH
         @BindView(R.id.tv_price)
         TextView mPriceView;
 
-        public CartListViewHolder(View itemView, List<Item> items, boolean isResumed) {
+        CartListViewHolder(View itemView, List<Item> items, boolean isResumed) {
             super(itemView);
 
             mItems = items;

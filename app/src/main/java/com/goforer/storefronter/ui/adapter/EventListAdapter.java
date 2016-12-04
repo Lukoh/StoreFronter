@@ -100,7 +100,7 @@ public class EventListAdapter extends BaseListAdapter<Event> implements ItemTouc
 
     @Override
     protected RecyclerView.ViewHolder createViewHolder(View view, int type) {
-        return new EventListViewHolder(view, mItems, ((BaseActivity)mContext).resumed());
+        return new EventListViewHolder(view, getItems(), ((BaseActivity)mContext).resumed());
     }
 
     @Override
@@ -116,14 +116,14 @@ public class EventListAdapter extends BaseListAdapter<Event> implements ItemTouc
 
     @Override
     public void onItemDismiss(int position) {
-        mItems.remove(position);
+        getItems().remove(position);
         notifyItemRemoved(position);
         notifyItemChanged(position);
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(mItems, fromPosition, toPosition);
+        Collections.swap(getItems(), fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         notifyItemChanged(fromPosition);
         notifyItemChanged(toPosition);
@@ -142,7 +142,7 @@ public class EventListAdapter extends BaseListAdapter<Event> implements ItemTouc
         EventBus.getDefault().post(action);
     }
 
-    public static class EventListViewHolder extends BaseViewHolder<Event> {
+    final static class EventListViewHolder extends BaseViewHolder<Event> {
         private List<Event> mEventItems;
 
         private boolean mIsResumed;
@@ -158,7 +158,7 @@ public class EventListAdapter extends BaseListAdapter<Event> implements ItemTouc
         @BindView(R.id.tv_validity_date)
         TextView mValidityDateView;
 
-        public EventListViewHolder(View itemView, List<Event> items, boolean isResumed) {
+        EventListViewHolder(View itemView, List<Event> items, boolean isResumed) {
             super(itemView);
 
             mEventItems = items;

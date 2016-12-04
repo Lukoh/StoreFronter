@@ -55,8 +55,6 @@ public class EventListFragment extends RecyclerFragment<Event>  {
 
     private EventListAdapter mAdapter;
 
-    private int mTotalPageNum;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -67,7 +65,6 @@ public class EventListFragment extends RecyclerFragment<Event>  {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTotalPageNum = 1;
         setItemHasFixedSize(true);
         refresh(true);
     }
@@ -133,7 +130,7 @@ public class EventListFragment extends RecyclerFragment<Event>  {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return mAdapter = new EventListAdapter(mContext, mItems, R.layout.list_event_item, true);
+        return mAdapter = new EventListAdapter(mContext, getListItems(), R.layout.list_event_item, true);
     }
 
     @Override
@@ -171,14 +168,12 @@ public class EventListFragment extends RecyclerFragment<Event>  {
 
     @Override
     protected List<Event> parseItems(JsonElement json) {
-        mTotalPageNum = getTotalPage();
         return new ListModel<>(Event.class).fromJson(json);
     }
 
     @Override
     protected boolean isLastPage(int pageNum) {
-        return (mTotalPageNum == pageNum);
-
+        return (getTotalPageCount() == pageNum) && (getTotalPageCount() >= 1);
     }
 
     protected void requestEventList(boolean isNew)

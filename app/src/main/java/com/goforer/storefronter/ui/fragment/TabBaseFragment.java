@@ -160,7 +160,7 @@ public class TabBaseFragment extends RecyclerFragment<CategoryItem> {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return new TabInfoGridAdapter(mContext, mItems,
+        return new TabInfoGridAdapter(mContext, getListItems(),
                 R.layout.grid_tab_info_item, false);
     }
 

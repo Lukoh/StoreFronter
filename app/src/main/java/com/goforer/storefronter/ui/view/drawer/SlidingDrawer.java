@@ -29,6 +29,7 @@ import android.view.View;
 import com.goforer.base.ui.activity.BaseActivity;
 import com.goforer.storefronter.R;
 import com.goforer.storefronter.model.data.Comment;
+import com.goforer.storefronter.model.data.Event;
 import com.goforer.storefronter.model.data.Item;
 import com.goforer.storefronter.model.data.Profile;
 import com.goforer.storefronter.ui.view.drawer.model.drawer.CommentDrawerItem;
@@ -73,9 +74,14 @@ public class SlidingDrawer {
     private AccountHeader mHeader = null;
     private Drawer mDrawer = null;
     private Drawer mCommentsDrawer = null;
+    private MenuDrawerItem mMenuDrawerItem;
+    private PrimaryDrawerItem mItemIdDrawerItem;
+    private PrimaryDrawerItem mPayoutDrawerItem;
+    private CustomCountPanelDrawableItem mGalleryCountDrawerItem;
     private Item mItem;
     private Profile mProfile;
     private Context mContext;
+    private BaseActivity mActivity;
     private Bundle mBundle;
 
     private int mType;
@@ -84,6 +90,7 @@ public class SlidingDrawer {
     public SlidingDrawer(final Context context, final int type, int rootViewRes,
                          @Nullable Bundle savedInstanceState) {
         mContext = context;
+        mActivity = (BaseActivity) context;
         mType = type;
         mRootViewRes = rootViewRes;
         mBundle = savedInstanceState;
@@ -118,14 +125,23 @@ public class SlidingDrawer {
     private void setDrawer(int type) {
         switch(type) {
             case DRAWER_PROFILE_TYPE:
-                mDrawer = createProfileDrawer((BaseActivity)mContext, mRootViewRes, mBundle);
+                mDrawer = createProfileDrawer(mActivity, mRootViewRes, mBundle);
                 break;
             case DRAWER_INFO_TYPE:
-                mDrawer = createInfoDrawer((BaseActivity)mContext, mBundle);
+                if (mDrawer == null) {
+                    mDrawer = createInfoDrawer((BaseActivity)mContext, mBundle);
+                } else {
+                    updateDrawerItems();
+                }
+
                 break;
             case DRAWER_INFO_COMMENT_TYPE:
-                mDrawer = createInfoDrawer((BaseActivity)mContext, mBundle);
-                mCommentsDrawer = createCommentsDrawer((BaseActivity)mContext, mBundle, false);
+                if (mDrawer == null) {
+                    mDrawer = createInfoDrawer((BaseActivity)mContext, mBundle);
+                } else {
+                    updateDrawerItems();
+                }
+
                 break;
             default:
         }
@@ -319,6 +335,79 @@ public class SlidingDrawer {
         return drawerItems;
     }
 
+    private void updateDrawerItems() {
+        setMenuDrawerItem(mMenuDrawerItem);
+        mDrawer.updateItem(mMenuDrawerItem);
+        setOfferIdPrimaryDrawerItem(mItemIdDrawerItem);
+        mDrawer.updateItem(mItemIdDrawerItem);
+        setPayoutPrimaryDrawerItem(mPayoutDrawerItem);
+        mDrawer.updateItem(mPayoutDrawerItem);
+        setGalleryCountPanelDrawerItem(mGalleryCountDrawerItem);
+        mDrawer.updateItem(mGalleryCountDrawerItem);
+    }
+
+    private void setMenuDrawerItem(MenuDrawerItem menuDrawerItem) {
+        menuDrawerItem.withIcon(mItem.getImage())
+                .withMenu(mItem.getTitle())
+                .withMenuSub2(mActivity.getResources()
+                        .getString(R.string.drawer_item_type) + "  "
+                        + String.valueOf(mItem.getId()))
+                .withDescription(mItem.getDescription())
+                .withSelectable(false)
+                .withSelectedTextColorRes(R.color.md_white_1000)
+                .withSelectedColorRes(R.color.material_drawer_menu_selected)
+                .withIdentifier(3000);
+    }
+
+    private void setOfferIdPrimaryDrawerItem(PrimaryDrawerItem offerIdPrimaryDrawerItem) {
+        offerIdPrimaryDrawerItem.withName(R.string.drawer_item_id)
+                .withDescription(String.valueOf(mItem.getId()))
+                .withIcon(R.drawable.ic_drawer_id)
+                .withTextColor(mContext.getApplicationContext().getResources()
+                        .getColor(R.color.colorPrimaryDark))
+                .withDescriptionTextColor(mContext.getApplicationContext()
+                        .getResources()
+                        .getColor(R.color.material_drawable_item_id_text))
+                .withSelectable(false);
+    }
+
+    private void setPayoutPrimaryDrawerItem(PrimaryDrawerItem payoutPrimaryDrawerItem) {
+        payoutPrimaryDrawerItem.withName(R.string.drawer_item_price)
+                .withDescription(String.valueOf(mItem.getPrice()))
+                .withIcon(R.drawable.ic_drawer_price)
+                .withTextColor(mContext.getApplicationContext().getResources()
+                        .getColor(R.color.colorPrimaryDark))
+                .withDescriptionTextColor(mContext.getApplicationContext()
+                        .getResources()
+                        .getColor(R.color.material_drawable_item_id_text))
+                .withSelectable(false);
+    }
+
+    private void setGalleryCountPanelDrawerItem(
+            CustomCountPanelDrawableItem galleryCountDrawerItem) {
+        galleryCountDrawerItem
+                .withName(mActivity.getResources().getString(
+                        R.string.drawer_item_gallery))
+                .withCount(String.valueOf(mItem.getGalleryCount()))
+                .withCountTextColor(mContext.getApplicationContext().getResources()
+                        .getColor(R.color.material_drawable_bookmark_count_text))
+                .withIcon(R.drawable.ic_drawer_gallery)
+                .withIdentifier(DRAWER_INFO_ITEM_FIRST_GALLERY_ID)
+                .withArrowVisible(false)
+                .withSelectable(true)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        ActivityCaller.INSTANCE.callItemGallery(
+                                mContext, mItem.getId(),
+                                mItem.getTitle());
+                        mDrawer.closeDrawer();
+
+                        return false;
+                    }
+                });
+    }
+
     private Drawer createInfoDrawer(final BaseActivity activity,
                                     @Nullable Bundle savedInstanceState) {
         Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
@@ -326,65 +415,24 @@ public class SlidingDrawer {
         mItem.setGalleryCount(30);
 
         assert toolbar != null;
+        mMenuDrawerItem = new MenuDrawerItem();
+        setMenuDrawerItem(mMenuDrawerItem);
+        mItemIdDrawerItem = new PrimaryDrawerItem();
+        setOfferIdPrimaryDrawerItem(mItemIdDrawerItem);
+        mPayoutDrawerItem = new PrimaryDrawerItem();
+        setPayoutPrimaryDrawerItem(mPayoutDrawerItem);
+        mGalleryCountDrawerItem = new CustomCountPanelDrawableItem();
+        setGalleryCountPanelDrawerItem(mGalleryCountDrawerItem);
         mDrawer = new DrawerBuilder()
                 .withActivity(activity)
                 .withToolbar(toolbar)
                 //.withHasStableIds(true)
                 //.withActionBarDrawerToggleAnimated(true)
                 .addDrawerItems(
-                        new MenuDrawerItem()
-                                .withIcon(mItem.getImage())
-                                .withMenu(mItem.getTitle())
-                                .withMenuSub2(activity.getResources()
-                                        .getString(R.string.drawer_item_type) + "  "
-                                        + String.valueOf(mItem.getCaegroy().getType()))
-                                .withDescription(mItem.getDescription())
-                                .withSelectable(false)
-                                .withSelectedTextColorRes(R.color.md_white_1000)
-                                .withSelectedColorRes(R.color.material_drawer_menu_selected)
-                                .withIdentifier(3000),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_id)
-                                .withDescription(String.valueOf(mItem.getId()))
-                                .withIcon(R.drawable.ic_drawer_id)
-                                .withTextColor(mContext.getApplicationContext().getResources()
-                                        .getColor(R.color.colorPrimaryDark))
-                                .withDescriptionTextColor(mContext.getApplicationContext()
-                                        .getResources()
-                                        .getColor(R.color.material_drawable_item_id_text))
-
-                                .withSelectable(false),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_price)
-                                .withDescription(String.valueOf(mItem.getPrice()))
-                                .withIcon(R.drawable.ic_drawer_price)
-                                .withTextColor(mContext.getApplicationContext().getResources()
-                                        .getColor(R.color.colorPrimaryDark))
-                                .withDescriptionTextColor(mContext.getApplicationContext()
-                                        .getResources()
-                                        .getColor(R.color.material_drawable_item_id_text))
-                                .withSelectable(false),
-                        new CustomCountPanelDrawableItem()
-                                .withName(activity.getResources().getString(
-                                        R.string.drawer_item_gallery))
-                                .withCount(String.valueOf(mItem.getGalleryCount()))
-                                .withCountTextColor(mContext.getApplicationContext().getResources()
-                                        .getColor(R.color.material_drawable_bookmark_count_text))
-                                .withIcon(R.drawable.ic_drawer_gallery)
-                                .withIdentifier(DRAWER_INFO_ITEM_FIRST_GALLERY_ID)
-                                .withArrowVisible(false)
-                                .withSelectable(true)
-                                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                                    @Override
-                                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                                        if (drawerItem != null) {
-                                            ActivityCaller.INSTANCE.callItemGallery(
-                                                    mContext, mItem.getId(),
-                                                    mItem.getTitle());
-                                            mDrawer.closeDrawer();
-                                        }
-
-                                        return false;
-                                    }
-                            })
+                        mMenuDrawerItem,
+                        mItemIdDrawerItem,
+                        mPayoutDrawerItem,
+                        mGalleryCountDrawerItem
                 ) // add the items we want to use with our Drawer
                 .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                     @Override

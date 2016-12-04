@@ -64,16 +64,15 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     private ItemTouchHelper mItemTouchHelper;
 
     private boolean mItemTouchHelperEnabled = false;
+    private boolean mIsLoading = false;
+    private boolean mIsUpdated = false;
 
-    protected List<T> mItems = new ArrayList<>();
+    private int mTotalPage = 0;
+    private int mCurrentPage = 0;
+
+    private List<T> mItems = new ArrayList<>();
+
     protected RecyclerView.OnScrollListener mOnScrollListener;
-
-    protected boolean mIsLoading = false;
-    protected boolean mIsReachToLast = false;
-    protected boolean mIsUpdated = false;
-
-    protected int mTotalPage = 0;
-    protected int mCurrentPage = 0;
 
     @BindView(R.id.swipe_layout)
     protected SwipyRefreshLayout mSwipeLayout;
@@ -117,10 +116,6 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         EventBus.getDefault().unregister(this);
 
         super.onDetach();
-    }
-
-    protected int getTotalPage() {
-        return mTotalPage;
     }
 
     private void setTotalPage(int page) {
@@ -281,6 +276,28 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     }
 
     /**
+     * Get the total page count
+     *
+     * @return The total page count
+     */
+    protected int getTotalPageCount() {
+        return mTotalPage;
+    }
+
+    /**
+     * Get current page number
+     *
+     * @return Current page number
+     */
+    protected int getCurrentPageNumber() {
+        return mCurrentPage;
+    }
+
+    protected List<T> getListItems() {
+        return mItems;
+    }
+
+    /**
      * RecyclerView can perform several optimizations if it can know in advance that changes in
      * adapter content cannot change the size of the RecyclerView itself.
      * If your use of RecyclerView falls into this category, set this to true.
@@ -387,6 +404,13 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
         return new DividerItemDecoration(mActivity, DividerItemDecoration.VERTICAL_LIST);
     }
 
+    /**
+     * Starts dragging the provided ViewHolder.
+     *
+     * @param viewHolder The ViewHolder to start dragging. It must be a direct child of
+     *                    RecyclerView.
+     */
+    @Deprecated
     protected void startDrag(RecyclerView.ViewHolder viewHolder) {
         if (mItemTouchHelper != null && mItemTouchHelperEnabled) {
             mItemTouchHelper.startDrag(viewHolder);
@@ -533,7 +557,6 @@ public abstract class RecyclerFragment<T> extends BaseFragment {
     }
 
     protected void clear() {
-        mIsReachToLast = false;
         mCurrentPage = 1;
 
         if (mItems != null && mItems.size() > 0) {

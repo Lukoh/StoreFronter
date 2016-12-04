@@ -56,8 +56,6 @@ public class CartListFragment  extends RecyclerFragment<Item> {
 
     private CartListAdapter mAdapter;
 
-    private int mTotalPageNum;
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public class CartListFragment  extends RecyclerFragment<Item> {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTotalPageNum = 1;
         setItemHasFixedSize(true);
         refresh(true);
     }
@@ -134,7 +131,7 @@ public class CartListFragment  extends RecyclerFragment<Item> {
 
     @Override
     protected RecyclerView.Adapter createAdapter() {
-        return mAdapter =  new CartListAdapter(mContext, mItems, R.layout.list_cart_item, true);
+        return mAdapter =  new CartListAdapter(mContext, getListItems(), R.layout.list_cart_item, true);
     }
 
     @Override
@@ -172,14 +169,12 @@ public class CartListFragment  extends RecyclerFragment<Item> {
 
     @Override
     protected List<Item> parseItems(JsonElement json) {
-        mTotalPageNum = getTotalPage();
         return new ListModel<>(Item.class).fromJson(json);
     }
 
     @Override
     protected boolean isLastPage(int pageNum) {
-        return (mTotalPageNum == pageNum);
-
+        return (getTotalPageCount() == pageNum) && (getTotalPageCount() >= 1);
     }
 
     protected void requestCartItemList(boolean isNew)

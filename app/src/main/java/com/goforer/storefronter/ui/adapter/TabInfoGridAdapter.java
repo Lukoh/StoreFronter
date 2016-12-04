@@ -82,7 +82,7 @@ public class TabInfoGridAdapter extends BaseListAdapter<CategoryItem> {
         }
     }
 
-    public static class TabInfoGridViewHolder extends BaseViewHolder<CategoryItem> {
+    final static class TabInfoGridViewHolder extends BaseViewHolder<CategoryItem> {
         private CategoryItem mItem;
 
         private boolean mIsResumed;
@@ -92,7 +92,7 @@ public class TabInfoGridAdapter extends BaseListAdapter<CategoryItem> {
         @BindView(R.id.tv_title)
         TextView mTitleView;
 
-        public TabInfoGridViewHolder(View itemView, boolean isResumed) {
+        TabInfoGridViewHolder(View itemView, boolean isResumed) {
             super(itemView);
 
             mIsResumed = isResumed;
