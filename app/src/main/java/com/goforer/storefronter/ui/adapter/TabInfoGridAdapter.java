@@ -102,7 +102,7 @@ public class TabInfoGridAdapter extends BaseListAdapter<CategoryItem> {
         public void bindItemHolder(@NonNull final CategoryItem item, final int position) {
             mItem = item;
 
-            Glide.with(mContext.getApplicationContext()).load(mItem.getImage())
+            Glide.with(getContext().getApplicationContext()).load(mItem.getImage())
                     .asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

@@ -172,7 +172,7 @@ public class EventListAdapter extends BaseListAdapter<Event> implements ItemTouc
                 @Override
                 public void onClick(View view) {
                     if (mIsResumed) {
-                        ActivityCaller.INSTANCE.callEvent(mContext, event);
+                        ActivityCaller.INSTANCE.callEvent(getContext(), event);
                     }
                 }
             });

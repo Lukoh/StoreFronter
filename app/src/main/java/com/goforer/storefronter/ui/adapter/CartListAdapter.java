@@ -170,7 +170,7 @@ public class CartListAdapter extends BaseListAdapter<Item> implements ItemTouchH
                 @Override
                 public void onClick(View view) {
                     if (mIsResumed) {
-                        ActivityCaller.INSTANCE.callCartItemInfo(mContext,  mItems, position,
+                        ActivityCaller.INSTANCE.callCartItemInfo(getContext(),  mItems, position,
                                 ActivityCaller.SELECTED_ITEM_POSITION);
                     }
                 }
